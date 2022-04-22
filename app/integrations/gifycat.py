@@ -45,9 +45,13 @@ class GfycatCaller(object):
             content["gfycats"], ["gifUrl", "likes", "views"]
         )
 
-    def get_search(self, keyword):
+    def get_search(self, search_text):
         url = self.DEFAULT_API_ENDPOINT + "/gfycats/search"
-        params = {"search_text": keyword}
+        params = {"search_text": search_text}
         resp = requests.get(url=url, params=params)
-        if resp.status_code == 200:
-            return resp.json()
+        if resp.status_code != 200:
+            return {"eroor": resp.json()}
+        content = resp.json()
+        return self.gfycat_content_parser(
+            content["gfycats"], ["gifUrl", "likes", "views"]
+        )

@@ -7,7 +7,7 @@ import os
 
 from app import create_app, gfycat_caller
 
-from flask import request, render_template
+from flask import request, render_template, url_for, redirect
 
 import json
 
@@ -22,8 +22,12 @@ def trending():
 
 @app.route("/search")
 def search():
-    keyword = request.args.get("keyword", "")
-    return gfycat_caller.get_search(keyword)
+    search_text = request.args.get("search_text")
+    if not search_text:
+        return redirect(url_for('trending'))
+    imgs = gfycat_caller.get_search(search_text)
+
+    return render_template("scatter_plot.html", imgs=json.dumps(imgs))
 
 
 if __name__ == "__main__":
