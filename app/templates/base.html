@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="shortcut icon" href="#">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% if title %}
+        <title>Gfycat Dashboard-{{ title }}</title>
+    {% else %}
+        <title>Gfycat Dashboard</title>
+    {% endif %}
+</head>
+
+<body style="background-color: #ffffff; height: 100%">
+    <!-- navbar  -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Gfycat Dashboard</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="{{url_for('trending')}}">Trending</a>
+                    </li>
+                </ul>
+                <form class="navbar-nav me-auto d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Keyword to search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit" >Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- navbar  -->
+
+    {% with messages = get_flashed_messages(with_categories=True) %} 
+        {% if messages %} 
+            {% for category, message in messages %}
+                <div class="position-absolute top-40 start-50 translate-middle-x" style="z-index:110">
+                    <div class="alert {{category}} alert-dismissible fade show" >
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+            {% endfor %} 
+        {% endif %}
+    {% endwith %}
+
+    <main class="mt-1 pt-1">
+        <body>
+            <div class="container-fluid">
+                {% block content %} {% endblock %}
+            </div>
+        </body>
+    </main>
+
+</body>
+
+</html>

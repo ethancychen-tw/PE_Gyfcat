@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <meta id="gfycat" data-gfycat_imgs="{{imgs}}" >
+
+    <div class="container">
+        <div class="row align-items-start">
+            <div class="col-1"></div>
+          <div class="col-6">
+            <canvas id="view_like_scatter"></canvas>
+          </div>
+          <div class="col-4">
+            <img id="displaying" src=""></img>
+          </div>
+          <div class="col-1"></div>
+        </div>
+      </div>
+    
+    <div>
+    
+</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+
+    <script>
+    const gfycat_imgs = $("#gfycat").data("gfycat_imgs")
+    var labels = []
+    var scatter_data = []
+    var pointStyles = []
+    for (var i in gfycat_imgs) {
+        labels.push(gfycat_imgs[i]["title"])
+        scatter_data.push({x: gfycat_imgs[i]["likes"], y: gfycat_imgs[i]["views"]})
+        var img = new Image(width=50, height=50)
+        img.src = gfycat_imgs[i]["gifUrl"]
+        pointStyles.push(img)
+    }
+
+    new Chart($('#view_like_scatter'), {
+    type: 'scatter',
+    plugins: {
+        afterUpdate: chart => {
+        chart.getDatasetMeta(0).data.forEach((d, i) => d._model.pointStyle = pointStyles[i]);
+        }
+    },
+    data: {
+        labels: labels,
+        datasets: [{
+        data: scatter_data,
+        backgroundColor: ["white"],
+        pointRadius: 10,
+        pointHitRadius: 50
+        }]
+    },
+    options: {
+        onClick: gfycatPtClickEvent,
+        legend: {
+        display: true
+        }
+    }
+    });
+
+    function gfycatPtClickEvent(event, array){
+        if(array.length !=1 )return
+        var selected_ind = array[0]._index
+        $('#displaying').attr("src", gfycat_imgs[selected_ind]["gifUrl"]);
+        }
+
+    </script>
+{% endblock%}
+

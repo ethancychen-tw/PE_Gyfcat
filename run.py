@@ -7,12 +7,14 @@ import os
 
 from app import create_app, gfycat_caller
 
-from flask import request
+from flask import request, render_template
 
+import json
 app = create_app(os.environ.get('FLASK_ENV'))
 @app.route("/trending")
 def trending():
-    return gfycat_caller.get_trending()
+    imgs = gfycat_caller.get_trending()
+    return render_template("scatter_plot.html", imgs=json.dumps(imgs))
 
 @app.route("/search")
 def search():

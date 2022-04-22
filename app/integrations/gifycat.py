@@ -10,7 +10,6 @@ class GfycatCaller(object):
         self.client_id = client_id
         self.client_secret = client_secret
 
-
     def set_token(self):
         url = self.DEFAULT_API_ENDPOINT+"/oauth/token"
         data = {
@@ -22,6 +21,13 @@ class GfycatCaller(object):
         if resp.status_code == 200:
             self.TOKEN = resp.json["access_token"]
         return self
+    def gfycat_content_parser(self, gyfcat_objs, selected_attrs):
+        """
+        return a list of dicts
+        """
+        return [{k:g.get(k) for k in selected_attrs} for g in gyfcat_objs]
+
+
 
     def get_trending(self, count=None):
         # no need for token
@@ -30,8 +36,10 @@ class GfycatCaller(object):
         if count is not None:
             params["count"] = count
         resp = requests.get(url=url,params=params)
-        if resp.status_code == 200:
-            return resp.json()
+        if resp.status_code != 200:
+            return {"eroor": resp.json()}
+        content = resp.json()
+        return self.gfycat_content_parser(content["gfycats"], ["gifUrl", "likes", "views"])
         
 
     def get_search(self, keyword):
