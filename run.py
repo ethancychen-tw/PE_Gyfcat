@@ -13,21 +13,24 @@ import json
 
 app = create_app(os.environ.get("FLASK_ENV"))
 
-
+@app.route("/")
 @app.route("/trending")
 def trending():
-    imgs = gfycat_caller.get_trending()
-    return render_template("scatter_plot.html", imgs=json.dumps(imgs))
+    cursor = request.args.get("cursor")
+    print(cursor)
+    imgs, cursor = gfycat_caller.get_trending(cursor=cursor)
+    return render_template("scatter_plot.html", title="Trending", imgs=json.dumps(imgs), cursor=cursor)
 
 
 @app.route("/search")
 def search():
+    cursor = request.args.get("cursor")
     search_text = request.args.get("search_text")
     if not search_text:
         return redirect(url_for('trending'))
-    imgs = gfycat_caller.get_search(search_text)
+    imgs, cursor = gfycat_caller.get_search(search_text, cursor=cursor)
 
-    return render_template("scatter_plot.html", imgs=json.dumps(imgs))
+    return render_template("scatter_plot.html", title="Search Result", imgs=json.dumps(imgs), cursor=cursor)
 
 
 if __name__ == "__main__":

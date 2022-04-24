@@ -1,25 +1,38 @@
 {% extends "base.html" %}
 
 {% block content %}
+<meta id="gfycat" data-gfycat_imgs="{{imgs}}" >
 
-    <meta id="gfycat" data-gfycat_imgs="{{imgs}}" >
+<div class="container">
+  <div class="row align-items-start">
+      <div class="col-1"></div>
+    <div class="col-6">
+      <canvas id="view_like_scatter"></canvas>
+    </div>
+    <div class="col-4">
+      <img id="displaying" src=""></img>
+    </div>
+    <div class="col-1"></div>
+  </div>
+  <div class="row align-items-start">
+    <div class="col-2"></div>
+    <div class="col-4">
+      {% if cursor %}
 
-    <div class="container">
-        <div class="row align-items-start">
-            <div class="col-1"></div>
-          <div class="col-6">
-            <canvas id="view_like_scatter"></canvas>
-          </div>
-          <div class="col-4">
-            <img id="displaying" src=""></img>
-          </div>
-          <div class="col-1"></div>
-        </div>
-      </div>
-    
-    <div>
-    
+        {% set kwargs = {"cursor":cursor  }%}
+        {% if "search_text" in request.args %}
+          {% set x = kwargs.__setitem__("search_text", request.args["search_text"]) %}
+        {% endif %}
+        <a href="{{url_for(request.endpoint, **kwargs)}}"><button type="button" class="btn btn-info">More</button></a>
+      {% endif %}
+    </div>
+    <div class="col-4">
+      <a id="gfycat_share_btn"><button type="button" class="btn btn-outline-success">Share</button></a>
+    </div>
+    <div class="col-2"></div>
+  </div>
 </div>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
 
     <script>
@@ -29,7 +42,7 @@
     var pointStyles = []
     for (var i in gfycat_imgs) {
         labels.push(gfycat_imgs[i]["title"])
-        scatter_data.push({x: gfycat_imgs[i]["likes"], y: gfycat_imgs[i]["views"]})
+        scatter_data.push({x: gfycat_imgs[i]["numFrames"], y: gfycat_imgs[i]["views"]})
         var img = new Image(width=50, height=50)
         img.src = gfycat_imgs[i]["gifUrl"]
         pointStyles.push(img)
@@ -54,17 +67,30 @@
     options: {
         onClick: gfycatPtClickEvent,
         legend: {
-        display: true
-        }
+          display: true
+        },
+        scales: {
+        yAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Views'
+          }
+        }],
+        xAxes: [{
+          scaleLabel: {
+            display: true,
+            labelString: 'Num Frames'
+          }
+        }]
+  }     
     }
     });
 
     function gfycatPtClickEvent(event, array){
-        if(array.length !=1 )return
-        var selected_ind = array[0]._index
-        $('#displaying').attr("src", gfycat_imgs[selected_ind]["gifUrl"]);
-        }
+      if(array.length !=1 )return
+      var selected_ind = array[0]._index
+      $('#displaying').attr("src", gfycat_imgs[selected_ind]["gifUrl"]);
+    }
 
     </script>
 {% endblock%}
-

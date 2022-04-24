@@ -31,27 +31,39 @@ class GfycatCaller(object):
         """
         return [{k: g.get(k) for k in selected_attrs} for g in gyfcat_objs]
 
-    def get_trending(self, count=None):
+    def get_trending(self, count=None, cursor=None):
         # no need for token
         url = self.DEFAULT_API_ENDPOINT + "/gfycats/trending"
         params = {}
         if count is not None:
             params["count"] = count
+        if cursor is not None:
+            params["cursor"] = cursor
         resp = requests.get(url=url, params=params)
         if resp.status_code != 200:
-            return {"eroor": resp.json()}
+            return {"error": resp.json()}
         content = resp.json()
+        cursor = None
+        if "cursor" in content:
+            cursor = content["cursor"]
         return self.gfycat_content_parser(
-            content["gfycats"], ["gifUrl", "likes", "views"]
-        )
+            content["gfycats"], ["gifUrl", "numFrames", "views"]
+        ), cursor
 
-    def get_search(self, search_text):
+    def get_search(self, search_text, count=None, cursor=None):
         url = self.DEFAULT_API_ENDPOINT + "/gfycats/search"
         params = {"search_text": search_text}
+        if count is not None:
+            params["count"] = count
+        if cursor is not None:
+            params["cursor"] = cursor
         resp = requests.get(url=url, params=params)
         if resp.status_code != 200:
-            return {"eroor": resp.json()}
+            return {"error": resp.json()}
         content = resp.json()
+        cursor = None
+        if "cursor" in content:
+            cursor = content["cursor"]
         return self.gfycat_content_parser(
-            content["gfycats"], ["gifUrl", "likes", "views"]
-        )
+            content["gfycats"], ["gifUrl", "numFrames", "views"]
+        ), cursor
