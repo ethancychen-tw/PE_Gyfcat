@@ -1,4 +1,4 @@
-# uber_takehome
+# Take home assisngment: Partner Eng
 
 Show Gfycats trending & search results. 
 User can share the specific image via line chatting bot
