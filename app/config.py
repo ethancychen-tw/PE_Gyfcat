@@ -13,6 +13,9 @@ class Config:
     GFYCAT_CLIENT_ID = os.environ.get("GIFYCAT_CLIENT_ID")
     GFYCAT_CLIENT_SECRET = os.environ.get("GIFYCAT_CLIENT_SECRET")
 
+    LINEBOT_MSG_CHANNEL_ACCESS_TOKEN = os.environ.get('LINEBOT_MSG_CHANNEL_ACCESS_TOKEN', None)
+    LINEBOT_MSG_CHANNEL_SECRET = os.environ.get('LINEBOT_MSG_CHANNEL_SECRET', None)
+
     @staticmethod
     def init_app(app):
         pass
