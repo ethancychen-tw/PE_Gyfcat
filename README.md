@@ -17,5 +17,5 @@ Then run:
 (5) `python run.py`  
 
 # Notes
-- Webhook URL registeration on developer's platform is required if want to test linebot features.
+- Webhook URL registeration on ![Line developer's console](https://developers.line.biz/en/) is required if want to test linebot features.
 - I use poetry for package management.
