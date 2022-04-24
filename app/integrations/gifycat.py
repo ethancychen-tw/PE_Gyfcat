@@ -46,9 +46,12 @@ class GfycatCaller(object):
         cursor = None
         if "cursor" in content:
             cursor = content["cursor"]
-        return self.gfycat_content_parser(
-            content["gfycats"], ["gifUrl", "numFrames", "views"]
-        ), cursor
+        return (
+            self.gfycat_content_parser(
+                content["gfycats"], ["gifUrl", "numFrames", "views"]
+            ),
+            cursor,
+        )
 
     def get_search(self, search_text, count=None, cursor=None):
         url = self.DEFAULT_API_ENDPOINT + "/gfycats/search"
@@ -64,6 +67,9 @@ class GfycatCaller(object):
         cursor = None
         if "cursor" in content:
             cursor = content["cursor"]
-        return self.gfycat_content_parser(
-            content["gfycats"], ["gifUrl", "numFrames", "views"]
-        ), cursor
+        return (
+            self.gfycat_content_parser(
+                content["gfycats"], ["gifUrl", "numFrames", "views"]
+            ),
+            cursor,
+        )
