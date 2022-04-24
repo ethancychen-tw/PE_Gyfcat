@@ -10,14 +10,20 @@ gfycat_caller = GfycatCaller(
 )
 
 
-line_bot_api = LineBotApi(config[os.environ.get('FLASK_ENV')].LINEBOT_MSG_CHANNEL_ACCESS_TOKEN)
-handler = WebhookHandler(config[os.environ.get('FLASK_ENV')].LINEBOT_MSG_CHANNEL_SECRET)
+line_bot_api = LineBotApi(
+    config[os.environ.get("FLASK_ENV")].LINEBOT_MSG_CHANNEL_ACCESS_TOKEN
+)
+handler = WebhookHandler(config[os.environ.get("FLASK_ENV")].LINEBOT_MSG_CHANNEL_SECRET)
 
 from app.integrations.linebot import callback
+
+
 def create_app(config_name="development"):
     app = Flask(__name__)
     app.config.from_object(config[config_name])
 
-    app.add_url_rule('/linebot_callback', 'linebot_callback', callback, methods=['POST'])
+    app.add_url_rule(
+        "/linebot_callback", "linebot_callback", callback, methods=["POST"]
+    )
 
     return app
