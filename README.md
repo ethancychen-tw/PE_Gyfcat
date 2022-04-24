@@ -7,6 +7,6 @@ Requirement:
 - ^Python3.8
 
 # How to run
-> python run.py
+> > python run.py
 
-Webhook URL registeration on developer's platform is required if want to test linebot features.
+*Webhook URL registeration on developer's platform is required if want to test linebot features.
