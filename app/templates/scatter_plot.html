@@ -90,6 +90,7 @@
       if(array.length !=1 )return
       var selected_ind = array[0]._index
       $('#displaying').attr("src", gfycat_imgs[selected_ind]["gifUrl"]);
+      $('#gfycat_share_btn').attr("href",encodeURI( "/shareLine?gifUrl="+gfycat_imgs[selected_ind]["gifUrl"]+"&next="+$(location).attr('href')))
     }
 
     </script>
