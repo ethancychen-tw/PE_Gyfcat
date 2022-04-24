@@ -5,6 +5,7 @@ User can share the specific image via line chatting bot
 
 Requirement:
 - ^Python3.8
+- Flask
 
 # How to run
 > > python run.py
